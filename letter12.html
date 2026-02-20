@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Letter 💌</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+    z-index: 10;
+    transition: opacity 0.8s ease;
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 32px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.countdown {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.envelope {
+    width: 300px;
+    height: 180px;
+    background: #f5d6d6;
+    position: relative;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease;
+}
+
+.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-6px); }
+    100% { transform: translateX(0); }
+}
+
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #eac0c0;
+    clip-path: polygon(0 0, 100% 0, 50% 50%);
+    transform-origin: top;
+    transition: transform 0.6s ease;
+}
+
+.heart {
+    position: absolute;
+    font-size: 42px;
+    color: #b33;
+    top: 60px;
+    left: 0;
+    right: 0;
+}
+
+.letter-preview {
+    position: absolute;
+    width: 260px;
+    height: 160px;
+    background: white;
+    top: 10px;
+    left: 10px;
+    border-radius: 6px;
+    transform: translateY(40px);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+.vintage-page {
+    position: absolute;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    background: #fdf6e3;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.8s ease;
+    line-height: 1.7;
+    font-size: 17px;
+    color: #4a3b2c;
+    display: none;
+    text-align: center;
+}
+
+.heart-bg {
+    position: absolute;
+    color: rgba(255, 100, 150, 0.2);
+    animation: float 10s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+.confetti {
+    position: absolute;
+    font-size: 22px;
+    pointer-events: none;
+    animation: explode 1.2s ease-out forwards;
+}
+
+@keyframes explode {
+    from {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translate(var(--x), var(--y)) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.open .flap {
+    transform: rotateX(180deg);
+}
+
+.open .letter-preview {
+    transform: translateY(-120px);
+    opacity: 1;
+}
+
+.show-letter {
+    opacity: 1;
+    transform: scale(1);
+    display: block;
+}
+
+.next-btn {
+    margin-top: 25px;
+    padding: 12px 26px;
+    font-size: 15px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ff8fb1, #ffb3c6);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    display: none;
+    opacity: 0;
+}
+
+.next-btn.show {
+    display: inline-block;
+    opacity: 1;
+}
+
+.message-popup {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff8fb1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+/* Make everything responsive */
+* {
+    box-sizing: border-box;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 22px;
+        padding: 0 15px;
+    }
+
+    .countdown {
+        font-size: 13px;
+        padding: 0 10px;
+    }
+
+    .envelope {
+        width: 90%;
+        max-width: 300px;
+        height: 160px;
+    }
+
+    .heart {
+        font-size: 32px;
+        top: 50px;
+    }
+
+    .letter-preview {
+        width: 85%;
+        left: 7.5%;
+        height: 140px;
+    }
+
+    .vintage-page {
+        width: 90%;
+        max-width: 95%;
+        padding: 18px;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .next-btn {
+        width: 90%;
+        max-width: 260px;
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .message-popup {
+        width: 90%;
+        font-size: 13px;
+        text-align: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="popupMessage" class="message-popup"></div>
+
+<script>
+for (let i = 0; i < 25; i++) {
+    let heart = document.createElement("div");
+    heart.innerHTML = "❤";
+    heart.className = "heart-bg";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (18 + Math.random() * 26) + "px";
+    heart.style.animationDuration = (6 + Math.random() * 10) + "s";
+    document.body.appendChild(heart);
+}
+</script>
+
+<div class="container" id="container">
+    <h1>Click on the envelope to open!</h1>
+    <div class="countdown" id="countdown"></div>
+
+    <div class="envelope" onclick="openEnvelope()" id="envelope">
+        <div class="flap"></div>
+        <div class="heart">❤</div>
+        <div class="letter-preview"></div>
+    </div>
+</div>
+
+<div class="vintage-page" id="vintagePage">
+<br>
+<br>
+<br>
+The Day You Just Knew
+
+Hey,<br>
+
+Tujhe yaad hai vo din? Jab I got my period aur main kitni chidi hui thi. Bina kuch bole, bina kisi explanation ke, tune khud hi guess kar liya ki shayad isliye main itni frustrated hoon.
+
+Aur fir tu… tu itna pyaar se baat kar raha tha — “okayyy baby”, “yaa baby”, “ohhoo cutiee”…
+
+Pata hai? Us din main hadd se zyada khush thi. Like actually happy. Itni ki Keemaya bhi notice kar li thi. Vo mujhse puch rahi thi, “bhai aaj itni khush kaise hai?”
+
+Aur main soch rahi thi… ab isko kaise bataun ki main itni khush toh mere Shivyy ki wajah se hoon.
+
+Tu bina bole samajh leta hai. Bina bole hi samajh jaata hai ki hua kya hai.
+
+Aur shayad isiliye, yeh letters likhte-likhte ek thought aa gaya… What if we never ended up like we imagined? Phir as usual main rone lag gayi (I know, kuch nayi baat nahi hai, kyuki vo mujhe har do ghante mein aata hi rehta hai).
+
+Banaras saath jaana… NYC dekhna… Hamesha saath rehna… Aur sabse favourite — kisses ke liye wait na karna.
+
+Aur voh din yaad hai? Jab tune note daala tha!? Voh bhi mujhe mention karke!!! AAHHHAAAAAAAAA… voh sach mein bahut zyada acha tha. Like legit, I was very happy.<br>
+Ily babyyyyyyy💟<br>
+
+— Dixita 🤍
+<button class="next-btn" id="nextBtn" onclick="goNext()">
+Proceed to the Next Letter 💖
+</button>
+</div>
+
+<script>
+const unlockTime = new Date("February 19, 2026 15:06:00");
+
+function updateCountdown() {
+    const now = new Date();
+    const diff = unlockTime - now;
+
+    if (diff <= 0) {
+        document.getElementById("countdown").innerText = "It's opened!💖";
+        return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("countdown").innerText =
+        `Unlocks in ${hours}h ${minutes}m ${seconds}s`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+function showMessage(text) {
+    const popup = document.getElementById("popupMessage");
+    popup.innerText = text;
+    popup.style.opacity = "1";
+
+    setTimeout(() => {
+        popup.style.opacity = "0";
+    }, 1000);
+}
+
+function heartConfetti() {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement("div");
+        confetti.innerHTML = "💖";
+        confetti.className = "confetti";
+        confetti.style.left = centerX + "px";
+        confetti.style.top = centerY + "px";
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 150 + Math.random() * 200;
+
+        confetti.style.setProperty('--x', Math.cos(angle) * distance + "px");
+        confetti.style.setProperty('--y', Math.sin(angle) * distance + "px");
+
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 1200);
+    }
+}
+
+function openEnvelope() {
+    const now = new Date();
+
+    if (now < unlockTime) {
+        showMessage("Have patience babyy, read the rules again.");
+        const envelope = document.getElementById("envelope");
+        envelope.classList.add("shake");
+        setTimeout(() => envelope.classList.remove("shake"), 300);
+        return;
+    } else {
+        showMessage("The wait is over babyyy.");
+    }
+
+    const envelope = document.getElementById("envelope");
+    const container = document.getElementById("container");
+    const vintagePage = document.getElementById("vintagePage");
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (!envelope.classList.contains("open")) {
+        envelope.classList.add("open");
+        heartConfetti();
+
+        setTimeout(() => container.style.display = "none", 1000);
+        setTimeout(() => {
+            vintagePage.style.display = "block";
+            setTimeout(() => {
+                vintagePage.classList.add("show-letter");
+                nextBtn.classList.add("show");
+            }, 50);
+        }, 1200);
+    }
+}
+
+function goNext() {
+    window.location.href = "letter13.html";
+}
+</script>
+
+</body>
+</html>
