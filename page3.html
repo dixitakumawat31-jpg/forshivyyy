@@ -304,14 +304,9 @@ Proceed to the Next Letter 💖
 
 <script>
 const unlockTime = new Date("February 25, 2026 23:30:00");
-    // Check if already opened before
-window.onload = function() {
-    const alreadyOpened = localStorage.getItem("letterOpened");
-
-    if (alreadyOpened === "true") {
-        showOpenedState();
-    }
-};
+if (!envelope.classList.contains("open")) {
+    envelope.classList.add("open");
+    heartConfetti();
 
 function updateCountdown() {
     const now = new Date();
@@ -401,24 +396,12 @@ if (!envelope.classList.contains("open")) {
 
 function goNext() {
     window.location.href = "letter2.html";
-}
-    function showOpenedState() {
-    const envelope = document.getElementById("envelope");
-    const container = document.getElementById("container");
-    const vintagePage = document.getElementById("vintagePage");
-    const nextBtn = document.getElementById("nextBtn");
 
-    envelope.classList.add("open");
-
-    container.style.display = "none";
-    vintagePage.style.display = "block";
-    vintagePage.classList.add("show-letter");
-    nextBtn.classList.add("show");
-}
 </script>
 
 </body>
 </html>
+
 
 
 
