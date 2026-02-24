@@ -304,6 +304,14 @@ Proceed to the Next Letter 💖
 
 <script>
 const unlockTime = new Date("February 20, 2026 23:30:00");
+    // Check if already opened before
+window.onload = function() {
+    const alreadyOpened = localStorage.getItem("letterOpened");
+
+    if (alreadyOpened === "true") {
+        showOpenedState();
+    }
+};
 
 function updateCountdown() {
     const now = new Date();
@@ -375,9 +383,10 @@ function openEnvelope() {
     const vintagePage = document.getElementById("vintagePage");
     const nextBtn = document.getElementById("nextBtn");
 
-    if (!envelope.classList.contains("open")) {
-        envelope.classList.add("open");
-        heartConfetti();
+if (!envelope.classList.contains("open")) {
+    envelope.classList.add("open");
+    localStorage.setItem("letterOpened", "true");
+    heartConfetti();
 
         setTimeout(() => container.style.display = "none", 1000);
         setTimeout(() => {
@@ -393,9 +402,23 @@ function openEnvelope() {
 function goNext() {
     window.location.href = "letter2.html";
 }
+    function showOpenedState() {
+    const envelope = document.getElementById("envelope");
+    const container = document.getElementById("container");
+    const vintagePage = document.getElementById("vintagePage");
+    const nextBtn = document.getElementById("nextBtn");
+
+    envelope.classList.add("open");
+
+    container.style.display = "none";
+    vintagePage.style.display = "block";
+    vintagePage.classList.add("show-letter");
+    nextBtn.classList.add("show");
+}
 </script>
 
 </body>
 </html>
+
 
 
