@@ -3,189 +3,553 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Happy Birthday 💖</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-    body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #ffffff;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    }
+:root {
+    --rose:        #c0616a;
+    --rose-mid:    #d4787f;
+    --rose-light:  #efc8cb;
+    --rose-pale:   #fdf0f1;
+    --rose-ultra:  #fff7f8;
+    --ink:         #3a2a2e;
+    --ink-soft:    #7a5c62;
+    --gold:        #c9a96e;
+    --gold-light:  #f5ecd8;
+    --white:       #ffffff;
+}
 
-    h1 {
-        font-family: 'Dancing Script', cursive;
-        font-size: 42px;
-        color: #444;
-    }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    p {
-        font-size: 20px;
-        color: #666;
-    }
+html, body {
+    min-height: 100vh;
+    font-family: 'Lato', sans-serif;
+}
 
-    .container {
-        text-align: center;
-        z-index: 10;
-    }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--rose-pale);
+    overflow-x: hidden;
+    position: relative;
+}
 
-    .password-box {
-        border: 3px solid #e88;
-        padding: 20px;
-        border-radius: 12px;
-        display: inline-block;
-        background: #fff5f7;
-        margin-top: 10px;
-    }
+/* Grain overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+}
 
-    input {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        margin-top: 10px;
-        width: 220px;
-        text-align: center;
-    }
+/* Floating petals */
+.petal {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0;
+    animation: drift linear infinite;
+    z-index: 1;
+    user-select: none;
+}
 
-    button {
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        background: #e88;
-        color: white;
-        cursor: pointer;
-    }
+@keyframes drift {
+    0%   { transform: translateY(108vh) rotate(0deg) scale(1);   opacity: 0; }
+    8%   { opacity: 0.3; }
+    92%  { opacity: 0.3; }
+    100% { transform: translateY(-8vh)  rotate(540deg) scale(0.7); opacity: 0; }
+}
 
-    button:hover {
-        background: #d66;
-    }
+/* ─── MAIN CARD ─── */
+.card {
+    position: relative;
+    z-index: 10;
+    background: var(--white);
+    border-radius: 18px;
+    box-shadow:
+        0 1px 0 var(--rose-light),
+        0 3px 0 #e8b0b5,
+        0 24px 60px rgba(192,97,106,0.18),
+        0 6px 20px rgba(58,42,46,0.08);
+    width: 92%;
+    max-width: 400px;
+    overflow: hidden;
+    animation: cardIn 0.8s cubic-bezier(0.34,1.2,0.64,1) both;
+}
 
-    .error {
-        color: red;
-        margin-top: 10px;
-    }
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-    /* Floating background hearts */
-    .heart-bg {
-        position: absolute;
-        color: rgba(255, 100, 150, 0.25);
-        animation: float 10s linear infinite;
-    }
+/* Gold top accent */
+.card-accent {
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
 
-    @keyframes float {
-        from { transform: translateY(100vh); }
-        to { transform: translateY(-10vh); }
-    }
+/* Header section */
+.card-header {
+    padding: 32px 36px 24px;
+    text-align: center;
+    border-bottom: 1px solid #fae8ea;
+    background: linear-gradient(180deg, #fff7f8 0%, #ffffff 100%);
+}
 
-    /* Confetti hearts */
-    .confetti {
-        position: absolute;
-        font-size: 20px;
-        pointer-events: none;
-        animation: explode 1.2s ease-out forwards;
-    }
+.card-icon {
+    width: 62px;
+    height: 62px;
+    background: linear-gradient(135deg, #fde8ea, #f9cdd1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 16px;
+    border: 2px solid var(--rose-light);
+    box-shadow: 0 4px 14px rgba(192,97,106,0.2);
+}
 
-    @keyframes explode {
-        from {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-        }
-        to {
-            transform: translate(var(--x), var(--y)) scale(0.5);
-            opacity: 0;
-        }
-    }
+.card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+}
+
+.card-subtitle {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+}
+
+/* Letter counter badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding: 5px 14px;
+    background: var(--gold-light);
+    border: 1px solid #e8d5ae;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #8a6830;
+    letter-spacing: 0.05em;
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+}
+
+/* Body section */
+.card-body {
+    padding: 28px 36px 32px;
+}
+
+.field-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rose-mid);
+    margin-bottom: 10px;
+}
+
+/* Input wrapper */
+.input-wrap {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-wrap .lock-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--rose-light);
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.input-wrap input:focus ~ .lock-icon,
+.input-wrap:focus-within .lock-icon {
+    color: var(--rose-mid);
+}
+
+.pass-input {
+    width: 100%;
+    padding: 13px 44px 13px 42px;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--rose-ultra);
+    border: 1.5px solid var(--rose-light);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+.pass-input::placeholder {
+    color: #d0a8ad;
+    letter-spacing: 0.2em;
+}
+
+.pass-input:focus {
+    border-color: var(--rose-mid);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(192,97,106,0.1);
+}
+
+/* Show/hide toggle */
+.eye-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--rose-light);
+    font-size: 17px;
+    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.eye-btn:hover { color: var(--rose-mid); }
+
+/* Hint row */
+.hint-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+.hint-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--rose-light);
+    flex-shrink: 0;
+}
+
+/* Unlock button */
+.unlock-btn {
+    width: 100%;
+    padding: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.06em;
+    color: white;
+    background: linear-gradient(135deg, var(--rose), var(--rose-mid));
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(192,97,106,0.35);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.unlock-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    border-radius: 10px;
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(192,97,106,0.42);
+}
+
+.unlock-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(192,97,106,0.3);
+}
+
+.unlock-btn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Error state */
+.error-msg {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 300;
+    color: #b04050;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: all 0.3s ease;
+}
+
+.error-msg.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.error-msg .shake-emoji {
+    display: inline-block;
+    animation: wobble 0.5s ease;
+}
+
+@keyframes wobble {
+    0%,100% { transform: rotate(0); }
+    20% { transform: rotate(-12deg); }
+    40% { transform: rotate(12deg); }
+    60% { transform: rotate(-8deg); }
+    80% { transform: rotate(8deg); }
+}
+
+/* Divider */
+.card-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #f2dde0, transparent);
+    margin: 0 36px;
+}
+
+/* Footer */
+.card-footer {
+    padding: 16px 36px 20px;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 300;
+    color: #c8a0a5;
+    letter-spacing: 0.06em;
+}
+
+/* Input shake on wrong */
+.pass-input.wrong {
+    animation: inputShake 0.4s ease;
+    border-color: #e07070;
+}
+
+@keyframes inputShake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    animation: burst 1.5s ease-out forwards;
+    z-index: 999;
+}
+
+@keyframes burst {
+    from { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+    to   { transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.2); opacity: 0; }
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--ink);
+    color: #fde8ea;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34,1.4,0.64,1);
+    white-space: nowrap;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .card { border-radius: 16px; }
+    .card-header { padding: 26px 24px 20px; }
+    .card-body { padding: 22px 24px 26px; }
+    .card-title { font-size: 26px; }
+    .card-footer { padding: 14px 24px 18px; }
+    .card-divider { margin: 0 24px; }
+}
 </style>
 </head>
-
 <body>
 
+<div id="toast" class="toast"></div>
+
 <script>
-/* Floating hearts background */
-for (let i = 0; i < 25; i++) {
-    let heart = document.createElement("div");
-    heart.innerHTML = "❤";
-    heart.className = "heart-bg";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (16 + Math.random() * 24) + "px";
-    heart.style.animationDuration = (6 + Math.random() * 10) + "s";
-    document.body.appendChild(heart);
+const petalSymbols = ['🌸','♡','✿','🌷','❀'];
+for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalSymbols[Math.floor(Math.random() * petalSymbols.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.fontSize = (12 + Math.random() * 16) + 'px';
+    p.style.animationDuration = (11 + Math.random() * 14) + 's';
+    p.style.animationDelay = (Math.random() * 16) + 's';
+    p.style.opacity = '0';
+    document.body.appendChild(p);
 }
 </script>
 
-<div class="container">
-    <h1>13 letters remaining😋</h1>
-    <p>Enter the password:</p>
+<div class="card">
+    <div class="card-accent"></div>
 
-    <div class="password-box">
-        <div style="font-size:18px; margin-bottom:10px;">password</div>
-        <input type="password" id="passwordInput" placeholder="••••••">
-        <br>
-        <button onclick="checkPassword()">Unlock 💖</button>
-        <div class="error" id="errorMsg"></div>
+    <div class="card-header">
+        <div class="card-icon">💌</div>
+        <div class="card-title">A gift, just for you</div>
+        <div class="card-subtitle">enter the secret password to unlock</div>
+        <div class="badge">
+            <div class="badge-dot"></div>
+            12 letters remaining
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="field-label">Password</div>
+
+        <div class="input-wrap">
+            <span class="lock-icon">🔒</span>
+            <input
+                class="pass-input"
+                type="password"
+                id="passwordInput"
+                placeholder="· · · · · · · ·"
+                onkeydown="if(event.key==='Enter') checkPassword()"
+                autocomplete="off"
+                spellcheck="false"
+            >
+            <button class="eye-btn" id="eyeBtn" onclick="toggleVisibility()" aria-label="Show password" title="Show password">👁️</button>
+        </div>
+
+        <div class="hint-row">
+            <div class="hint-dot"></div>
+            think of a date that means everything 🌸
+        </div>
+
+        <button class="unlock-btn" id="unlockBtn" onclick="checkPassword()">
+            Unlock &nbsp;💖
+        </button>
+
+        <div class="error-msg" id="errorMsg">
+            <span class="shake-emoji">🥺</span>
+            It's the wrong password, babyy — try again!
+        </div>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <div class="card-footer">
+        made with love, just for you ✦
     </div>
 </div>
 
 <script>
-function heartConfetti() {
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+let visible = false;
 
-    for (let i = 0; i < 40; i++) {
-        const confetti = document.createElement("div");
-        confetti.innerHTML = "💖";
-        confetti.className = "confetti";
+function toggleVisibility() {
+    visible = !visible;
+    const inp = document.getElementById('passwordInput');
+    const btn = document.getElementById('eyeBtn');
+    inp.type = visible ? 'text' : 'password';
+    btn.textContent = visible ? '🙈' : '👁️';
+    btn.title = visible ? 'Hide password' : 'Show password';
+}
 
-        confetti.style.left = centerX + "px";
-        confetti.style.top = centerY + "px";
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+}
 
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 150 + Math.random() * 200;
-
-        const x = Math.cos(angle) * distance + "px";
-        const y = Math.sin(angle) * distance + "px";
-
-        confetti.style.setProperty('--x', x);
-        confetti.style.setProperty('--y', y);
-
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 1200);
+function burst() {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const emojis = ['💖','🌸','💕','❤️','💝'];
+    for (let i = 0; i < 55; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = cx + 'px';
+        el.style.top  = cy + 'px';
+        const ang = Math.random() * Math.PI * 2;
+        const dist = 100 + Math.random() * 300;
+        el.style.setProperty('--tx', Math.cos(ang) * dist + 'px');
+        el.style.setProperty('--ty', Math.sin(ang) * dist + 'px');
+        el.style.setProperty('--r',  (Math.random() * 400 - 200) + 'deg');
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1600);
     }
 }
 
 function checkPassword() {
-    const password = document.getElementById("passwordInput").value.toLowerCase().trim();
+    const input = document.getElementById('passwordInput');
+    const errorMsg = document.getElementById('errorMsg');
+    const btn = document.getElementById('unlockBtn');
+    const password = input.value.toLowerCase().trim();
 
     if (password === "15 november") {
-        heartConfetti();
-
+        btn.classList.add('loading');
+        btn.textContent = 'Opening… 💖';
+        errorMsg.classList.remove('show');
+        burst();
+        showToast('Welcome in, baby 💖');
         setTimeout(() => {
             window.location.href = "letter5.html";
-        }, 900);
+        }, 1100);
     } else {
-        document.getElementById("errorMsg").innerText = "It's wrong password babyyy 🥺";
+        errorMsg.classList.remove('show');
+        input.classList.remove('wrong');
+
+        void input.offsetWidth; // force reflow to restart animation
+
+        input.classList.add('wrong');
+        errorMsg.classList.add('show');
+        input.select();
+
+        setTimeout(() => input.classList.remove('wrong'), 500);
     }
 }
 </script>
 
 </body>
-
 </html>
-
-
-
-
-
-
-
